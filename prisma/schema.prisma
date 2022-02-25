@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int              @id @default(autoincrement())
+  username     String           @db.VarChar(50)
+  email        String           @db.VarChar(150)
+  password     String           @db.VarChar(70)
+  biography    String?          @db.VarChar(500)
+  profileImage String?          @db.VarChar(100)
+  token        String?
+  expires      DateTime?
+  registers    Register[]
+  listsItems   ListItemsGroup[]
+  comments     Comment[]
+
+  @@map(name: "user")
+}
+
+model Register {
+  id           Int       @id @default(autoincrement())
+  name         String
+  itemType     String
+  apiId        Int
+  score        Int?
+  watched      Boolean   @default(false)
+  watchlist    Boolean   @default(false)
+  liked        Boolean   @default(false)
+  review       String?   @db.Text
+  watchedAt    DateTime  @default(now())
+  registeredAt DateTime  @default(now())
+  userId       Int
+  user         User      @relation(fields: [userId], references: [id])
+  comments     Comment[]
+
+  @@map(name: "register")
+}
+
+model ListItemsGroup {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String     @db.Text
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id])
+  listItems   ListItem[]
+
+  @@map(name: "list_items_group")
+}
+
+model ListItem {
+  id               Int            @id @default(autoincrement())
+  apiId            Int
+  itemType         String
+  title            String
+  posterPath       String
+  listItemsGroupId Int
+  listItemsGroup   ListItemsGroup @relation(fields: [listItemsGroupId], references: [id])
+
+  @@map(name: "list_item")
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  comment    String   @db.Text
+  registerId Int
+  register   Register @relation(fields: [registerId], references: [id])
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  postedAt   DateTime @default(now())
+
+  @@map("comment")
+}
