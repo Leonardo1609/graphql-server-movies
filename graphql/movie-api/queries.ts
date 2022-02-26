@@ -1,4 +1,4 @@
-import TheMovieApi from '../../datasources/theMovieApi'
+import { IContext } from '../../interfaces/context.interface'
 import {
   Genre,
   ICreditsResp,
@@ -17,7 +17,7 @@ interface IMovieApiQuery {
   [field: string]: (
     parent: undefined,
     args: any,
-    context: { dataSources: { movieApi: TheMovieApi } },
+    context: IContext,
     info: any
   ) => any
 }
