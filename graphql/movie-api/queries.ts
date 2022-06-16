@@ -10,6 +10,7 @@ import {
   IShowsInAiringResp,
   ITopMoviesResp,
   ITopShowsResp,
+  IVideosResp,
   MovieOrShow,
 } from '../../interfaces/movieApi.interface'
 
@@ -92,5 +93,12 @@ export const movieApiQueries: IMovieApiQuery = {
     { dataSources }
   ): Promise<Genre[]> => {
     return await dataSources.movieApi.getGenres(itemType)
+  },
+  getVideos: async (
+    _,
+    { itemId, type }: { itemId: number; type: MovieOrShow },
+    { dataSources }
+  ): Promise<IVideosResp> => {
+    return await dataSources.movieApi.getVideos(itemId, type)
   },
 }

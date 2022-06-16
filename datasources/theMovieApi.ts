@@ -11,6 +11,7 @@ import {
   IShowsInAiringResp,
   ITopMoviesResp,
   ITopShowsResp,
+  IVideosResp,
   MovieOrShow,
 } from '../interfaces/movieApi.interface'
 
@@ -148,6 +149,19 @@ class TheMovieApi extends RESTDataSource {
         }&language=en-US`
       )
       return resp.genres
+    } catch (error) {
+      throw new UserInputError('There was an error')
+    }
+  }
+
+  async getVideos(itemId: number, itemType: MovieOrShow): Promise<IVideosResp> {
+    try {
+      const resp: IVideosResp = await this.get(
+        `${this.baseURL}/${itemType.toLowerCase()}/${itemId}/videos?api_key=${
+          this.movieApiKey
+        }&language=en-US`
+      )
+      return resp
     } catch (error) {
       throw new UserInputError('There was an error')
     }

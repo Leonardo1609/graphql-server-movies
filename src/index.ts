@@ -43,6 +43,7 @@ const typeDefs = gql`
   }
 
   type Query {
+    getVideos(itemId: Int, type: ItemType): VideosResponse
     getCredits(itemId: Int, type: ItemType): CreditsResponse
     getGenres(itemType: ItemType): [Genre!]!
     getMovie(movieId: Int): Movie

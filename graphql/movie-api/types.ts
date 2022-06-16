@@ -1,7 +1,26 @@
 import { gql } from 'apollo-server'
 
 export const typesMovieApi = gql`
+  type VideosResponse {
+    id: Int
+    results: [Video!]
+  }
+
+  type Video {
+    iso_639_1: String
+    iso_3166_1: String
+    name: String
+    key: String
+    published_at: String
+    site: String
+    size: Int
+    type: String
+    official: Boolean
+    id: String
+  }
+
   type CreditsResponse {
+    id: Int
     crew: [ItemCast!]
     cast: [ItemCast!]
   }
