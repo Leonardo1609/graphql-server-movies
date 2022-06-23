@@ -36,6 +36,7 @@ model Register {
   watchlist    Boolean   @default(false)
   liked        Boolean   @default(false)
   review       String?   @db.Text
+  spoilers     Boolean   @default(false)
   watchedAt    DateTime  @default(now())
   registeredAt DateTime  @default(now())
   userId       Int

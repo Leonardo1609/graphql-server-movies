@@ -54,7 +54,7 @@ const login = async (_: undefined, { email, password }: ILoginUser) => {
     throw new AuthenticationError('Invalid credentials')
   }
 
-  const passwordsMatch = comparePasswords(password, userExists.password)
+  const passwordsMatch = await comparePasswords(password, userExists.password)
   if (!passwordsMatch) {
     throw new AuthenticationError('Invalid credentials')
   }

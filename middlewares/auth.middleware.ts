@@ -20,6 +20,6 @@ export const authMiddleware = (req: Request): { id: number } | null => {
     }
     return user
   } catch (err) {
-    throw new ApolloError('Invalid token')
+    return null
   }
 }

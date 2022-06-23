@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { IResolvers } from '@graphql-tools/utils'
 import { gql, ApolloServer } from 'apollo-server'
 import { movieApiQueries } from '../graphql/movie-api/queries'
-import { typesMovieApi } from '../graphql/movie-api/types'
+import { schemaMovieApi } from '../graphql/movie-api/schema'
 import { authMiddleware } from '../middlewares/auth.middleware'
 import { usersMutations } from '../graphql/users/mutations'
 import { usersQueries } from '../graphql/users/queries'
@@ -35,7 +35,7 @@ const typeDefs = gql`
     watchlist: Boolean
   }
 
-  ${typesMovieApi}
+  ${schemaMovieApi}
 
   enum ItemType {
     MOVIE

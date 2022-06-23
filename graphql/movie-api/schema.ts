@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server'
 
-export const typesMovieApi = gql`
+export const schemaMovieApi = gql`
   type VideosResponse {
     id: Int
     results: [Video!]
