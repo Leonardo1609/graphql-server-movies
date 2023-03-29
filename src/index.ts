@@ -7,6 +7,11 @@ import { schemaMovieApi } from '../graphql/movie-api/schema'
 import { authMiddleware } from '../middlewares/auth.middleware'
 import { usersMutations } from '../graphql/users/mutations'
 import { usersQueries } from '../graphql/users/queries'
+import { schemaRegisters } from '../graphql/registers/schema'
+import { registersResolvers } from '../graphql/registers/resolvers'
+import { registersMutations } from '../graphql/registers/mutations'
+import { registerQueries } from '../graphql/registers/queries'
+import { movieApiResolvers } from '../graphql/movie-api/resolvers'
 
 dotenv.config()
 
@@ -21,28 +26,30 @@ const typeDefs = gql`
     expires: String
   }
 
-  type Register {
-    apiId: Int!
-    id: Int!
-    itemType: ItemType!
-    liked: Boolean
-    name: String!
-    registeredAt: String
-    review: String
-    score: Int
-    watched: Boolean
-    watchedAt: String
-    watchlist: Boolean
-  }
-
-  ${schemaMovieApi}
-
   enum ItemType {
     MOVIE
     TV
   }
 
+  # MovieAPI Schema
+  ${schemaMovieApi}
+
+  # Register Schema
+  ${schemaRegisters}
+
+  type SuccessAnswer {
+    ok: Boolean
+  }
+
+  type IStandardRespWithPages {
+    page: Int
+    totalPages: Int
+    totalItems: Int
+    items: [Register!]!
+  }
+
   type Query {
+    # MovieAPI Queries
     getVideos(itemId: Int, type: ItemType): VideosResponse
     getCredits(itemId: Int, type: ItemType): CreditsResponse
     getGenres(itemType: ItemType): [Genre!]!
@@ -54,12 +61,21 @@ const typeDefs = gql`
     getTopRatedShows(page: Int): IStandardShowApiResp
     searchMovies(query: String, page: Int): IStandardMovieApiResp
     searchShows(query: String, page: Int): IStandardShowApiResp
+
+    # User Queries
     verifyUser: VerifyUserResp
+
+    # Registers Queries
+    getRegister(apiId: Int!): Register
+    getRegisters: [Register!]!
+    getWatchlist(page: Int!): IStandardRespWithPages
+    getItemsLiked(page: Int!): IStandardRespWithPages
   }
 
   type Mutation {
     createUser(username: String!, password: String!, email: String!): String
     login(email: String!, password: String!): String
+    registerItem(registerInput: RegisterInput): SuccessAnswer
   }
 
   type VerifyUserResp {
@@ -69,12 +85,16 @@ const typeDefs = gql`
 `
 
 const resolvers: IResolvers<undefined, any, Record<string, any>, any> = {
+  ...movieApiResolvers,
+  ...registersResolvers,
   Query: {
     ...movieApiQueries,
     ...usersQueries,
+    ...registerQueries,
   },
   Mutation: {
     ...usersMutations,
+    ...registersMutations,
   },
 }
 

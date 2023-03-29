@@ -30,16 +30,16 @@ const createUser = async (
     throw new ForbiddenError('Email already exists')
   }
 
-  const hashedPassword = await hashPassword(password)
-  const newUser = await prisma.user.create({
-    data: {
-      username,
-      password: hashedPassword,
-      email,
-    },
-  })
-
   try {
+    const hashedPassword = await hashPassword(password)
+    const newUser = await prisma.user.create({
+      data: {
+        username,
+        password: hashedPassword,
+        email,
+      },
+    })
+
     const token = await createJwt(newUser.id)
     if (!token) throw new Error()
     return token

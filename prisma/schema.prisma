@@ -31,7 +31,7 @@ model Register {
   name         String
   itemType     String
   apiId        Int
-  score        Int?
+  score        Float?
   watched      Boolean   @default(false)
   watchlist    Boolean   @default(false)
   liked        Boolean   @default(false)
